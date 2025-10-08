@@ -1922,9 +1922,40 @@ section,
   transform: translateY(0);
 }
 
+
 .portfolio .portfolio-entry:hover .entry-image .entry-overlay .entry-links a {
   opacity: 1;
   transform: translateY(0);
+}
+
+/* --- Fix: keep title at bottom; prevent hidden buttons from reserving space --- */
+.portfolio .portfolio-entry .entry-image .entry-overlay {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 20px;
+  padding-bottom: 10px; /* move content lower */
+}
+
+/* Title stays near the bottom regardless of button state */
+/* Title stays near the bottom regardless of button state */
+.portfolio .portfolio-entry .entry-image .entry-overlay .entry-title {
+  margin: 0 0 10px;
+  transition: margin-bottom 0.3s ease;
+}
+
+.portfolio .portfolio-entry:hover .entry-image .entry-overlay .entry-title {
+  margin-bottom: 72px; /* rises above the buttons when hovered */
+}
+
+/* Buttons are absolutely positioned at the bottom so they don't shift layout */
+.portfolio .portfolio-entry .entry-image .entry-overlay .entry-links {
+  position: absolute;
+  left: 0px;
+  bottom: 0;
+  display: flex;
+  gap: 12px;
+  padding-bottom: 8px; /* a little breathing room */
 }
 
 @media (max-width: 768px) {
@@ -2006,6 +2037,35 @@ section,
   .portfolio .entry-overlay {
     padding: 20px;
   }
+}
+
+.portfolio .portfolio-entry .entry-image .entry-overlay {
+  opacity: 1;
+  transform: none;
+  background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,.75) 100%);
+  display: flex;
+  align-items: flex-end;
+  padding: 20px;
+  padding-bottom: 30px;
+}
+
+.portfolio .portfolio-entry .entry-image .entry-overlay .entry-title {
+  display: block;
+  color: var(--contrast-color);
+  font-size: 20px;
+  font-weight: 600;
+  margin: 0 0 10px;
+}
+
+.portfolio .portfolio-entry .entry-image .entry-overlay .entry-links a {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.3s ease;
+}
+
+.portfolio .portfolio-entry:hover .entry-image .entry-overlay .entry-links a {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 /*--------------------------------------------------------------

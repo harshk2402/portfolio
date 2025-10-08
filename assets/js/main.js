@@ -241,3 +241,65 @@
   document.addEventListener('scroll', navmenuScrollspy);
 
 })();
+
+// ---- Contact form handler (Formspree) ----
+window.handleContactSubmit = async function (event) {
+  try {
+    event.preventDefault();
+    // Stop vendor listeners (e.g., validate.js) so they don't also flip messages
+    if (event.stopImmediatePropagation) event.stopImmediatePropagation();
+
+    const form = event.target;
+    const submitBtn = form.querySelector('button[type="submit"]');
+    const loading   = form.querySelector('.loading');
+    const errorBox  = form.querySelector('.error-message');
+    const sentBox   = form.querySelector('.sent-message');
+
+    // Reset UI
+    if (errorBox) { errorBox.style.display = 'none'; errorBox.textContent = ''; }
+    if (sentBox)  { sentBox.style.display  = 'none'; }
+    if (loading)  { loading.style.display  = 'block'; }
+    if (submitBtn){ submitBtn.disabled      = true; }
+
+    const res = await fetch(form.getAttribute('action'), {
+      method: 'POST',
+      body: new FormData(form),
+      headers: { 'Accept': 'application/json' }
+    });
+
+    if (loading) loading.style.display = 'none';
+
+    if (res.ok) {
+      if (sentBox) {
+        sentBox.textContent = 'Your message has been sent. Thank you!';
+        sentBox.style.display = 'block';
+      }
+      form.reset();
+    } else {
+      let msg = 'Something went wrong. Please try again later.';
+      try {
+        const data = await res.json();
+        if (data && data.errors && data.errors.length) {
+          msg = data.errors.map(e => e.message).join(', ');
+        }
+      } catch (_) {}
+      if (errorBox) {
+        errorBox.textContent = msg;
+        errorBox.style.display = 'block';
+      }
+    }
+  } catch (e) {
+    const form = event.target;
+    const loading  = form.querySelector('.loading');
+    const errorBox = form.querySelector('.error-message');
+    if (loading) loading.style.display = 'none';
+    if (errorBox) {
+      errorBox.textContent = 'Network error. Please check your connection and try again.';
+      errorBox.style.display = 'block';
+    }
+  } finally {
+    const form = event.target;
+    const submitBtn = form.querySelector('button[type="submit"]');
+    if (submitBtn) submitBtn.disabled = false;
+  }
+};
