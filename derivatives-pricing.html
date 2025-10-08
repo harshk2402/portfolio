@@ -37,6 +37,29 @@
     /* Remove media column spacing remnants */
     .portfolio-details .row.justify-content-center { margin-top: 0; }
     .portfolio-details-page .image-placeholder { text-align:center; font-style:italic; opacity:.8; padding:12px 0; }
+    /* --- CTA Fix for Derivatives Pricing Page --- */
+    .portfolio-details-page .cta-buttons {
+      position: relative !important;
+      z-index: 100 !important;
+      display: flex !important;
+      justify-content: center !important;
+      gap: 12px !important;
+      margin-top: 24px !important;
+      opacity: 1 !important;
+      visibility: visible !important;
+      transform: none !important;
+      pointer-events: auto !important;
+    }
+
+    .portfolio-details-page .cta-buttons a {
+      pointer-events: auto !important;
+      position: relative !important;
+      z-index: 101 !important;
+    }
+
+    #portfolio-details {
+      padding-bottom: 80px !important; /* ensures space above footer */
+    }
   </style>
 
   <!-- =======================================================
@@ -138,20 +161,20 @@
   </p>
 </div>
 
-        <div class="project-features" data-aos="fade-up" data-aos-delay="300">
-          <h3><i class="bi bi-stars"></i> Key Features</h3>
-          <div class="row g-3">
-            <div class="col-md-12">
-              <ul class="feature-list">
-                <li><i class="bi bi-check2-circle"></i> Lattice pricing (CRR binomial / trinomial) with European, American, digital & spread payoffs</li>
-                <li><i class="bi bi-check2-circle"></i> Closed‑form Black–Scholes for benchmarking against lattice outputs</li>
-                <li><i class="bi bi-check2-circle"></i> Monte Carlo for path‑dependent options (Asian) with control‑variate and Greeks</li>
-              </ul>
-            </div>
-          </div>
-        </div>
+<div class="project-features" data-aos="fade-up" data-aos-delay="300">
+  <h3><i class="bi bi-stars"></i> Key Features</h3>
+  <div class="row g-3">
+    <div class="col-md-12">
+      <ul class="feature-list">
+        <li><i class="bi bi-check2-circle"></i> Lattice pricing (CRR binomial / trinomial) with European, American, digital & spread payoffs</li>
+        <li><i class="bi bi-check2-circle"></i> Closed‑form Black–Scholes for benchmarking against lattice outputs</li>
+        <li><i class="bi bi-check2-circle"></i> Monte Carlo for path‑dependent options (Asian) with control‑variate and Greeks</li>
+      </ul>
+    </div>
+  </div>
+</div>
 
-        <div class="cta-buttons" data-aos="fade-up" data-aos-delay="400">
+        <div class="cta-buttons" data-aos="fade-up" data-aos-delay="400" style="opacity:1; visibility:visible; transform:none;">
 <a href="https://github.com/harshk2402/derivatives-pricing" class="btn-view-project" target="_blank">View Repository</a>
 <a href="index.html#portfolio" class="btn-next-project">Back to Projects <i class="bi bi-arrow-right"></i></a>
         </div>
@@ -165,7 +188,7 @@
     </section><!-- /Portfolio Details Section -->
 
   </main>
-  
+
   <!-- Scroll Top -->
   <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 

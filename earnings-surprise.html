@@ -38,6 +38,29 @@
     .portfolio-details .row.justify-content-center { margin-top: 0; }
     .portfolio-details-page .image-placeholder { text-align:center; font-style:italic; opacity:.8; padding:12px 0; }
   </style>
+  /* --- CTA visibility/clickability overrides (earnings-surprise) --- */
+  .portfolio-details-page .cta-buttons {
+    position: relative !important;
+    z-index: 100 !important;
+    display: flex !important;
+    justify-content: center !important;
+    gap: 12px !important;
+    margin-top: 24px !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: none !important;
+    pointer-events: auto !important;
+  }
+  .portfolio-details-page .cta-buttons a {
+    pointer-events: auto !important;
+    position: relative !important;
+    z-index: 101 !important;
+  }
+  #portfolio-details {
+    padding-bottom: 80px !important; /* ensure room above footer */
+  }
+  /* AOS fallback so elements stay visible if script fails */
+  [data-aos] { opacity: 1 !important; transform: none !important; }
 
   <!-- =======================================================
   * Template Name: Style
@@ -202,7 +225,7 @@
           </div>
         </div>
 
-        <div class="cta-buttons" data-aos="fade-up" data-aos-delay="400">
+        <div class="cta-buttons" style="position:relative; z-index:100; opacity:1; visibility:visible; transform:none; display:flex; justify-content:center; gap:12px; margin-top:24px;">
           <a href="assets/reports/caar.pdf" class="btn-view-project" target="_blank">Download Full Report (PDF)</a>
           <a href="index.html#portfolio" class="btn-next-project">Back to Projects <i class="bi bi-arrow-right"></i></a>
         </div>

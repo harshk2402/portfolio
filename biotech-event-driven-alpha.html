@@ -37,6 +37,13 @@
     /* Remove media column spacing remnants */
     .portfolio-details .row.justify-content-center { margin-top: 0; }
     .portfolio-details-page .image-placeholder { text-align:center; font-style:italic; opacity:.8; padding:12px 0; }
+    /* Ensure CTA buttons are clickable and above any overlays */
+    .portfolio-details-page .cta-buttons { position: relative; z-index: 50; pointer-events: auto !important; }
+    .portfolio-details-page .cta-buttons a { pointer-events: auto !important; position: relative; z-index: 51; }
+    /* Make the section establish a stacking context below CTAs */
+    .portfolio-details.section { position: relative; z-index: 1; }
+    /* AOS fallback: never hide or transform critical CTAs */
+    .portfolio-details-page .cta-buttons[data-aos] { opacity: 1 !important; transform: none !important; }
   </style>
 
   <!-- =======================================================
@@ -251,7 +258,7 @@
           </div>
         </div>
 
-        <div class="cta-buttons" data-aos="fade-up" data-aos-delay="400">
+        <div class="cta-buttons" data-aos="fade-up" data-aos-delay="400" style="opacity:1; visibility:visible; transform:none;">
           <a href="assets/reports/biotech_report.pdf" class="btn-view-project" target="_blank">Download Full Report (PDF)</a>
           <a href="index.html#portfolio" class="btn-next-project">Back to Projects <i class="bi bi-arrow-right"></i></a>
         </div>
