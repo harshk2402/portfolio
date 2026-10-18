@@ -5,8 +5,8 @@
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
   <title>Derivatives Pricing Engine (C++) - Projects Details</title>
-  <meta name="description" content="">
-  <meta name="keywords" content="">
+  <meta name="description" content="A C++ derivatives pricing library: binomial trees, closed-form Black–Scholes and Monte Carlo simulation, with every method cross-checked against the others.">
+  <meta name="keywords" content="C++, derivatives pricing, binomial tree, Black-Scholes, Monte Carlo, Asian options, implied volatility">
 
   <!-- Favicons -->
   <link href="assets/img/favicon.png" rel="icon">
@@ -142,7 +142,7 @@
       <div class="portfolio-details-content">
        
 
-        <h2 class="project-title">Derivatives Pricing Engine in C++: Lattice, Black–Scholes & Monte Carlo</h2>
+        <h2 class="project-title">Derivatives Pricing Engine in C++: Binomial Trees, Black–Scholes & Monte Carlo</h2>
 
         <div class="project-meta">
           <div class="badge-wrapper"><span class="project-badge">C++</span></div>
@@ -157,18 +157,101 @@
 
         <div class="project-overview">
   <p class="lead">
-  This project brings together a range of core techniques for pricing derivatives, implemented in modern C++. It combines three complementary approaches: lattice methods (binomial and trinomial) for pricing <b>European</b> and <b>American vanilla options</b>, as well as exotic structures such as <b>digital and spread options</b>; closed‑form Black–Scholes formulas for analytical benchmarking; and Monte Carlo simulation for path‑dependent products like <b>Asian options</b>, including control variates and bump‑and‑reprice Greeks. The engine separates models, payoffs, and numerical components, making it straightforward to extend to other contracts. Developed iteratively through coursework, it now provides a clear and performant base for both experimentation and professional use.
+  A dependency-free C++ library that prices options three independent ways: <b>binomial trees</b>, closed-form <b>Black–Scholes</b> and <b>Monte Carlo</b> simulation. Because the methods overlap, each one checks the others. It covers European and American vanilla options, digital and spread payoffs, path-dependent <b>Asian options</b> with control variates, multi-asset <b>basket options</b>, implied volatility and bond yields. Models, contracts and numerical tools are kept separate, so adding a new payoff means writing one small subclass, and every pricer then handles it.
   </p>
+
+  <div class="accordion project-accordion" id="portfolio-details-projectAccordion">
+    <!-- Architecture -->
+    <div class="accordion-item" data-aos="fade-up">
+      <h2 class="accordion-header">
+        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#portfolio-details-collapse-1" aria-expanded="true" aria-controls="portfolio-details-collapse-1">
+          <i class="bi bi-diagram-3 me-2"></i> Architecture
+        </button>
+      </h2>
+      <div id="portfolio-details-collapse-1" class="accordion-collapse collapse show" data-bs-parent="#portfolio-details-projectAccordion">
+        <div class="accordion-body">
+          <ul>
+            <li><strong>Modules:</strong> <code>binomial</code>, <code>analytic</code>, <code>montecarlo</code> (with a multi-asset <code>basket</code> sub-module), <code>fixedincome</code> and <code>numerics</code>. Each has its own namespace, and together they build as one CMake library.</li>
+            <li><strong>Models vs. contracts:</strong> a model (binomial tree, geometric Brownian motion) describes how the underlying moves. A contract only knows its payoff, through a virtual <code>Payoff</code>; pricers combine the two.</li>
+            <li><strong>One solver, many problems:</strong> bisection and Newton–Raphson work on a generic <code>Function</code> interface. The same code finds a bond's yield and an option's implied volatility.</li>
+            <li><strong>Composable Monte Carlo:</strong> the price, standard error and Greeks are stored on the option, so a control variate can combine one simulation with another option's closed-form price.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pricing Methods -->
+    <div class="accordion-item" data-aos="fade-up" data-aos-delay="100">
+      <h2 class="accordion-header">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#portfolio-details-collapse-2" aria-expanded="false" aria-controls="portfolio-details-collapse-2">
+          <i class="bi bi-gear-wide-connected me-2"></i> Pricing Methods
+        </button>
+      </h2>
+      <div id="portfolio-details-collapse-2" class="accordion-collapse collapse" data-bs-parent="#portfolio-details-projectAccordion">
+        <div class="accordion-body">
+          <ul>
+            <li><strong>Binomial trees:</strong> the Cox–Ross–Rubinstein model with an arbitrage check. European prices come from both the closed-form CRR formula and backward induction. The library also gives the replicating portfolio (stock and cash positions) at every node, and prices American options by the Snell envelope, including where exercise is optimal.</li>
+            <li><strong>Payoffs:</strong> calls, puts, digitals, bull and bear spreads, strangles, butterflies and double digitals.</li>
+            <li><strong>Closed form:</strong> Black–Scholes price, delta and vega; generalized Black–Scholes with a cost-of-carry term, covering dividend-paying stocks, futures and currencies; implied volatility.</li>
+            <li><strong>Monte Carlo:</strong> exact simulation of geometric Brownian motion paths, with standard errors. Delta and gamma come from rescaling the simulated paths, so the bumped prices reuse the same random numbers. Arithmetic Asian calls are priced with the geometric Asian call as a closed-form control variate.</li>
+            <li><strong>Multi-asset:</strong> correlated assets driven by a volatility matrix, basket Asian calls, and a delta for each asset computed on common random numbers.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Validation & Results -->
+    <div class="accordion-item" data-aos="fade-up" data-aos-delay="200">
+      <h2 class="accordion-header">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#portfolio-details-collapse-3" aria-expanded="false" aria-controls="portfolio-details-collapse-3">
+          <i class="bi bi-graph-up-arrow me-2"></i> Validation &amp; Results
+        </button>
+      </h2>
+      <div id="portfolio-details-collapse-3" class="accordion-collapse collapse" data-bs-parent="#portfolio-details-projectAccordion">
+        <div class="accordion-body">
+          <p>One European call (S<sub>0</sub> = 106, K = 100, r = 5.8%, σ = 46%, T = 0.75), priced with every method:</p>
+          <div class="table-responsive">
+            <table class="table table-sm pricing-table">
+              <thead>
+                <tr><th>Method</th><th class="text-end">Price</th><th class="text-end">vs. Black–Scholes</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>Black–Scholes formula</td><td class="text-end">21.5638</td><td class="text-end">–</td></tr>
+                <tr><td>CRR formula, 20 steps</td><td class="text-end">21.7004</td><td class="text-end">+0.1366</td></tr>
+                <tr><td>Backward induction, 20 steps</td><td class="text-end">21.7004</td><td class="text-end">+0.1366</td></tr>
+                <tr><td>Cost of replicating portfolio, 20 steps</td><td class="text-end">21.7004</td><td class="text-end">+0.1366</td></tr>
+                <tr><td>American call (Snell envelope), 20 steps</td><td class="text-end">21.7004</td><td class="text-end">+0.1366</td></tr>
+                <tr><td>Backward induction, 2,000 steps</td><td class="text-end">21.5648</td><td class="text-end">+0.0011</td></tr>
+                <tr><td>Monte Carlo, 1,000,000 paths</td><td class="text-end">21.5315 ± 0.0345</td><td class="text-end">−0.0323</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <ul>
+            <li><strong>Cross-checks:</strong> the CRR formula and backward induction agree to machine precision, and the replicating portfolio costs exactly the option price. The American call matches the European call, as it should with no dividends. Monte Carlo agrees with the closed form to within one standard error.</li>
+            <li><strong>Variance reduction:</strong> on a one-month arithmetic Asian call, the geometric control variate cuts the standard error from about 0.012 to 0.00014, roughly 85× smaller.</li>
+            <li><strong>Testing:</strong> 97 regression checks run in CI on Ubuntu and macOS. Deterministic results are checked to a relative tolerance of 10<sup>−11</sup> and Monte Carlo results statistically, and every example program also runs as a smoke test.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <div class="project-features" data-aos="fade-up" data-aos-delay="300">
   <h3><i class="bi bi-stars"></i> Key Features</h3>
   <div class="row g-3">
-    <div class="col-md-12">
+    <div class="col-md-6">
       <ul class="feature-list">
-        <li><i class="bi bi-check2-circle"></i> Lattice pricing (CRR binomial / trinomial) with European, American, digital & spread payoffs</li>
-        <li><i class="bi bi-check2-circle"></i> Closed‑form Black–Scholes for benchmarking against lattice outputs</li>
-        <li><i class="bi bi-check2-circle"></i> Monte Carlo for path‑dependent options (Asian) with control‑variate and Greeks</li>
+        <li><i class="bi bi-check2-circle"></i> Binomial pricing of European, American and exotic payoffs, with replicating portfolios</li>
+        <li><i class="bi bi-check2-circle"></i> Closed-form Black–Scholes, generalized for dividends, futures and FX, plus implied volatility</li>
+        <li><i class="bi bi-check2-circle"></i> Monte Carlo for Asian options, with control variates and pathwise Greeks</li>
+      </ul>
+    </div>
+    <div class="col-md-6">
+      <ul class="feature-list">
+        <li><i class="bi bi-check2-circle"></i> Correlated multi-asset basket options with a delta for each asset</li>
+        <li><i class="bi bi-check2-circle"></i> Generic root finding and quadrature reused across pricing problems</li>
+        <li><i class="bi bi-check2-circle"></i> 97 regression tests, an example for every method, and CI on Linux and macOS</li>
       </ul>
     </div>
   </div>
